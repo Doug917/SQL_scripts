@@ -39,8 +39,8 @@ on P.p = Q.p - 2
 2.  list all the semiprimes that are less than 1,000,000.
 
 select P.p, Q.p, P.p * Q.p as Semiprime
-from primes P cross join primes Q
+from primes P join primes Q
+on P.p < Q.p
 where P.p * Q.p < 1000000
-and P.p < Q.p
 order by P.p*Q.p ASC;
 
