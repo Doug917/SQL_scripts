@@ -36,7 +36,8 @@ SELECT 2 * COUNT(P.q) as NumTwinPrimes
 FROM primes P JOIN primes Q
 on P.p = Q.p - 2
 
-2.  list all the semiprimes that are less than 1,000,000.
+2.  list all the semiprimes that are less than 1,000,000
+where the factors are also less than 1,000.
 
 select P.p, Q.p, P.p * Q.p as Semiprime
 from primes P join primes Q
