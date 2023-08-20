@@ -1,9 +1,10 @@
 /*saved query to use in SSMS*
 updates table primes (p int) with prime numbers up to inputted value N*/
-/*When first using, you need to create the primes table and use the following code,
-replacing 'alter procedure' with 'create procedure'*/
+/*When first using, you need to create the primes table by running the following code.
+To run the procedure to generate all primes less than 1000, run:
+exec add_primes @N = 1000.*/
 
-alter procedure add_primes @N int
+create procedure add_primes @N int
 as
 begin
 	declare @i int
@@ -26,3 +27,20 @@ begin
 		set @i = @i + 1
 	end
 end
+
+
+/*Example queries:
+1.  print out the number of twin primes between 1 and 1000.
+
+SELECT 2 * COUNT(P.q) as NumTwinPrimes
+FROM primes P JOIN primes Q
+on P.p = Q.p - 2
+
+2.  list all the semiprimes that are less than 1,000,000.
+
+select P.p, Q.p, P.p * Q.p as Semiprime
+from primes P cross join primes Q
+where P.p * Q.p < 1000000
+and P.p < Q.p
+order by P.p*Q.p ASC;
+
