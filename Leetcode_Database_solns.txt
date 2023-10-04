@@ -1,0 +1,711 @@
+#175.
+
+# Write your MySQL query statement below
+select Person.firstName, Person.lastName, Address.city, Address.state
+from Person left Join Address On Person.personId = Address.personId
+
+#178.
+
+# Write your MySQL query statement below
+select score, dense_rank() over(order by score desc) as 'rank'
+from Scores;
+
+#180.
+
+/* Write your T-SQL query statement below */
+select distinct Logs.num as ConsecutiveNums
+from Logs join Logs as T
+on Logs.id = T.id - 1
+join Logs as Tprime
+on T.id = Tprime.id - 1
+where Logs.num = T.num and T.num = Tprime.num;
+
+#181.
+
+# Write your MySQL query statement below
+
+select E.name as Employee
+from Employee E join Employee M
+on E.managerId = M.id
+where E.salary > M.salary;
+
+#182.
+
+# Write your MySQL query statement below
+select Email from Person group by Email having count(Email) > 1;
+
+#183.
+
+# Write your MySQL query statement below
+select name as Customers
+from Customers
+where id not in
+(select customerId from Orders);
+
+#196.
+
+/* 
+ Please write a DELETE statement and DO NOT write a SELECT statement.
+ Write your T-SQL query statement below
+ */
+ delete from person where id in (select person.id from person join person as A on person.email = A.email where person.id > A.id);
+
+#197.
+
+/* Write your T-SQL query statement below */
+select W.id from Weather as W join Weather on datediff(day,Weather.recordDate,W.recordDate) = 1 where W.temperature > Weather.temperature;
+
+#511.
+
+# Write your MySQL query statement below
+select player_id, min(event_date) as first_login
+from Activity
+group by player_id;
+
+#550.
+
+/* Write your T-SQL query statement below */
+SELECT ROUND(CAST(COUNT(*) AS DECIMAL(10,2)) / CAST((SELECT COUNT(DISTINCT PLAYER_ID) FROM ACTIVITY) AS DECIMAL(10,2)),2) AS fraction
+FROM ACTIVITY JOIN
+(SELECT PLAYER_ID,MIN(EVENT_DATE) AS EVENT_DATE
+FROM ACTIVITY
+GROUP BY PLAYER_ID) AS T
+ON ACTIVITY.PLAYER_ID = T.PLAYER_ID
+WHERE DATEDIFF(DAY,T.EVENT_DATE,ACTIVITY.EVENT_DATE) = 1;
+
+#570.
+
+/* Write your T-SQL query statement below */
+select name from Employee where id in (select managerId from Employee group by managerId having count(managerId) >= 5);
+
+#577.
+
+/* Write your T-SQL query statement below */
+select Employee.name, Bonus.bonus from Employee left join Bonus on Employee.empId = Bonus.empId where Bonus.bonus < 1000 or Bonus.bonus is null;
+
+#584.
+
+/* Write your T-SQL query statement below */
+SELECT NAME FROM CUSTOMER WHERE REFEREE_ID IS NULL OR NOT REFEREE_ID = 2;
+
+#585.
+
+/* Write your T-SQL query statement below */
+select round(sum(cast(Insurance.tiv_2016 as Decimal(10,2))), 2) as tiv_2016
+from Insurance join
+(select lat,lon,count(pid) as counts from Insurance group by lat,lon
+having count(pid) = 1) as T
+on Insurance.lat = T.lat and Insurance.lon = T.lon
+where Insurance.tiv_2015 in
+(select tiv_2015
+from Insurance
+group by tiv_2015
+having count(tiv_2015) > 1);
+
+#586.
+
+# Write your MySQL query statement below
+
+select customer_number from Orders
+group by customer_number
+order by count(customer_number) desc
+limit 1;
+
+#595.
+
+/* Write your T-SQL query statement below */
+SELECT name,population,area FROM World WHERE area >= 3000000 or population >= 25000000;
+
+#596.
+
+/* Write your T-SQL query statement below */
+select class from Courses group by class having count(distinct student) >= 5;
+
+#597.
+
+# Write your MySQL query statement below
+select round(ifnull(count(distinct RA.requester_id,RA.accepter_id)/count(distinct FR.sender_id,FR.send_to_id),0),2)
+as accept_rate
+from RequestAccepted RA,FriendRequest FR;
+
+#602.
+
+/* Write your T-SQL query statement below */
+select TOP 1 T.id,sum(T.freq) as num
+from
+(select requester_id as id,count(requester_id) as freq
+from RequestAccepted
+group by requester_id
+union all
+select accepter_id as id,count(accepter_id) as freq
+from RequestAccepted
+group by accepter_id) as T
+group by T.id
+order by num desc;
+
+#603.
+
+# Write your MySQL query statement below
+select C1.seat_id as seat_id
+from Cinema C0 join Cinema C1
+on C1.seat_id - C0.seat_id = 1
+where C0.free = 1 and C1.free = 1
+union
+select C0.seat_id as seat_id
+from Cinema C0 join Cinema C1
+on C1.seat_id - C0.seat_id = 1
+where C0.free = 1 and C1.free = 1
+order by seat_id;
+
+#608.
+
+# Write your MySQL query statement below
+select id,
+case
+    when p_id is null then 'Root'
+    when id in (select p_id from Tree) then 'Inner'
+    else 'Leaf'
+end as type
+from Tree;
+
+#610.
+
+# Write your MySQL query statement below
+select x,y,z,if(x+y > z and y+z > x and x+z > y, "Yes", "No") as triangle from Triangle;
+
+#613.
+
+# Write your MySQL query statement below
+select min(abs(P.x-Q.x)) as shortest
+from Point P cross join Point Q
+on P.x <> Q.x;
+
+#620.
+
+/* Write your T-SQL query statement below */
+select * from Cinema where id % 2 = 1 and description <> 'boring' order by rating desc;
+
+#626.
+
+/* Write your T-SQL query statement below */
+select Seat.id,T.student
+from Seat join Seat as T on
+Seat.id = T.id - 1 and Seat.id % 2 = 1
+union
+select Seat.id,Q.student
+from Seat join Seat as Q on
+Seat.id = Q.id + 1 and Seat.id % 2 = 0
+union
+select id,student
+from Seat
+where id = (select max(id) from Seat) and id % 2 = 1
+order by id asc;
+
+#627.
+
+# Write your MySQL query statement below
+update Salary
+set sex = if(sex='m','f','m');
+
+#1045.
+
+/* Write your T-SQL query statement below */
+
+select customer_id from customer group by customer_id having count(distinct product_key) = (select count(distinct product_key) from Product);
+
+#1050.
+
+# Write your MySQL query statement below
+select actor_id, director_id
+from ActorDirector
+group by concat(actor_id,' ',director_id)
+having count(concat(actor_id,' ',director_id)) >= 3;
+
+#1068.
+
+/* Write your T-SQL query statement below */
+select Product.product_name,Sales.year,Sales.price from Sales join Product on Product.product_id = Sales.product_id;
+
+#1070.
+
+/* Write your T-SQL query statement below */
+select S.product_id,S.first_year,Sales.Quantity,Sales.price
+from Sales join
+(select product_id,min(year) as first_year from Sales group by product_id) as S
+on Sales.product_id = S.product_id and Sales.year = S.first_year;
+
+#1075.
+
+# Write your MySQL query statement below
+select project.project_id,round(avg(cast(employee.experience_years as float)),2) as average_years from project left join employee on project.employee_id = employee.employee_id group by project.project_id order by project.project_id;
+
+#1077.
+
+# Write your MySQL query statement below
+
+with CTE (project_id,employee_id,e_years,max_years) as
+(select P.project_id, E.employee_id, E.experience_years, max(E.experience_years) over (partition by P.project_id) as max_years
+from Project P join Employee E
+on P.employee_id = E.employee_id)
+
+
+select project_id,employee_id
+from CTE
+where e_years = max_years
+
+#1141.
+
+/* Write your T-SQL query statement below */
+select activity_date as day,count(distinct user_id) as active_users
+from Activity
+where activity_date between cast('2019-06-28' as date) and cast('2019-07-27' as date)
+group by activity_date;
+
+#1148.
+
+/* Write your T-SQL query statement below */
+select distinct author_id as id from Views where author_id = viewer_id order by id asc;
+
+#1164.
+
+/* Write your T-SQL query statement below */
+select T.product_id,Products.new_price as price
+from Products join
+(select product_id,max(change_date) as change_date
+from Products
+where change_date <= CAST('2019-08-16' as DATE)
+group by product_id
+having min(change_date) <= CAST('2019-08-16' as DATE)) as T
+on T.product_id = Products.product_id and T.change_date = Products.change_date
+union
+select product_id,10 as price
+from Products
+group by product_id
+having min(change_date) > CAST('2019-08-16' as DATE);
+
+#1173.
+
+# Write your MySQL query statement below
+select round(100*sum(if(order_date=customer_pref_delivery_date,1,0)) / count(*) , 2)
+as immediate_percentage
+from Delivery
+
+#1174.
+
+/* Write your T-SQL query statement below */
+
+/* find first orders*/
+select round(100.00 * cast(count(delivery.customer_id) as decimal(10,2)) / cast((select count(distinct customer_id) from Delivery) as decimal(10,2)),2) as immediate_percentage
+from (select customer_id,min(order_date) as first_order from delivery group by customer_id) as T
+join delivery on T.first_order = delivery.order_date and T.customer_id = delivery.customer_id where delivery.customer_pref_delivery_date = T.first_order;
+
+#1193.
+
+/* Write your T-SQL query statement below */
+select distinct substring(convert(varchar,Transactions.trans_date),1,7) as month,T.country,T.trans_count,T.approved_count,T.trans_total_amount,T.approved_total_amount from (select month(trans_date) as month,country,count(trans_date) as trans_count,sum(iif(state = 'approved',1,0)) as approved_count,
+sum(amount) as trans_total_amount,sum(iif(state = 'approved',amount,0)) as approved_total_amount
+from Transactions
+group by country,month(trans_date)) as T join Transactions
+on month(transactions.trans_date) = T.month and transactions.country = T.country;
+
+#1204.
+
+/* Write your T-SQL query statement below */
+
+select person_name
+from Queue
+where
+turn = 
+(select max(T.turn) from
+(select Q2.turn
+from Queue Q1 join Queue Q2
+on Q1.turn <= Q2.turn
+group by Q2.turn
+having sum(Q1.weight) <= 1000) as T);
+
+#1211.
+
+/* Write your T-SQL query statement below */
+select query_name,round(avg(cast(rating as decimal(10,2)) / cast(position as decimal(10,2))),2) as quality,round(100 * cast(sum(iif(rating<3,1,0)) as decimal(10,2)) / count(*), 2) as poor_query_percentage 
+from queries group by query_name;
+
+#1251.
+
+/* Write your T-SQL query statement below */
+select T.product_id, cast(sum(cast(T.units as decimal(10,3)) * cast(T.price as decimal(10,3))) / sum(cast(T.units as decimal(10,2))) as decimal(10,2)) as average_price from (SELECT prices.product_id,prices.price,UnitsSold.units from prices join UnitsSold on prices.product_id = UnitsSold.product_id where UnitsSold.purchase_date between prices.start_date and prices.end_date) as T group by T.product_id;
+
+#1280.
+
+/* Write your T-SQL query statement below */
+select T.student_id,T.student_name,T.subject_name,count(iif(T.subject_name=T.taken,T.subject_name,null)) as attended_exams 
+from 
+(select students.student_id,students.student_name,subjects.subject_name,examinations.subject_name as taken
+from students cross join subjects left join examinations on students.student_id = examinations.student_id) as T 
+group by T.subject_name,T.student_id,T.student_name 
+order by T.student_id,T.subject_name;
+
+#1303.
+
+# Write your MySQL query statement below
+with E2(team_id,team_size) as
+  (select team_id,count(*) as team_size
+  from Employee
+  group by team_id)
+
+    select E1.employee_id, E2.team_size
+    from Employee E1 join E2
+    on E1.team_id = E2.team_id;
+
+#1321.
+
+/* Write your T-SQL query statement below */
+with customer_prime (visited_on,amount)
+as
+  (select visited_on,sum(amount) as amount
+  from customer
+  group by visited_on)
+
+
+select T.visited_on,T.amount,round(T.average_amount, 2) as average_amount
+from
+(select row_number() over (order by visited_on) as row_val,visited_on,sum(cast(amount as decimal(10,2))) over(order by visited_on ROWS 6 PRECEDING) as "amount",avg(cast(amount as decimal(10,2))) over(order by visited_on ROWS 6 PRECEDING) as "average_amount"
+from customer_prime) as T
+where T.row_val >= 7;
+
+#1327.
+
+/* Write your T-SQL query statement below */
+select T.product_name,sum(T.unit) as unit from
+(select products.product_name,orders.unit
+from products join orders on
+products.product_id = orders.product_id
+where month(orders.order_date) = 2 and year(orders.order_date) = 2020) as T
+group by T.product_name
+having sum(T.unit) >= 100;
+
+#1341.
+
+/* Write your T-SQL query statement below */
+select * from
+(select top 1 Users.name as results
+from users join MovieRating
+on users.user_id = MovieRating.user_id
+group by Users.name
+order by count(MovieRating.user_id) desc,Users.name asc) as T1
+union all
+select * from
+(select top 1 movies.title as results
+from Movies join MovieRating
+on Movies.movie_id = MovieRating.movie_id
+where month(MovieRating.created_at) = 2 and year(MovieRating.created_at) = 2020
+group by movies.title
+order by avg(cast(MovieRating.rating as decimal(10,2))) desc,movies.title asc) as T2;
+
+#1350.
+
+# Write your MySQL query statement below
+
+SELECT id,name FROM STUDENTS
+where department_id not in
+(select id from Departments);
+
+#1378.
+
+/* Write your T-SQL query statement below */
+select unique_id,name 
+from EmployeeUNI full join Employees on EmployeeUNI.id = Employees.id
+
+#1398.
+
+# Write your MySQL query statement below
+select Customers.customer_id, Customers.customer_name
+from Customers join Orders
+on Customers.customer_id = Orders.customer_id
+group by Customers.customer_id
+having locate('A',group_concat(Orders.product_name)) != 0
+and locate('B',group_concat(Orders.product_name)) != 0
+and locate('C',group_concat(Orders.product_name)) = 0
+order by Customers.customer_id;
+ 
+#1407.
+
+# Write your MySQL query statement below
+select U.name, sum(ifnull(R.distance, 0)) as travelled_distance
+from Users U left join Rides R
+on U.id = R.user_id
+group by U.id
+order by travelled_distance desc,U.name asc;
+
+#1445.
+
+# Write your MySQL query statement below
+select T.sale_date,sum(T.amounts) as diff
+from
+(select sale_date,
+case
+when fruit='apples' then sold_num
+when fruit='oranges' then -1*sold_num
+end as amounts
+from Sales) as T
+group by T.sale_date;
+
+#1484.
+
+/* Write your T-SQL query statement below */
+SELECT  T.sell_Date,count(T.product) as num_sold,STRING_AGG(T.product, ',') within group (order by T.product asc) AS products
+from (select distinct sell_date,product from activities) as T
+group by T.sell_Date;
+
+#1495.
+
+# Write your MySQL query statement below
+select title from
+Content where content_id in
+
+(select content_id from Content where Kids_content = 'Y' and content_type = 'Movies'
+and content_id in (select content_id from TVProgram where month(program_date) = 6 and year(program_date) = 2020))
+
+#1517.
+
+# Write your MySQL query statement below
+select user_id,name,mail
+from Users
+where mail regexp '^[a-zA-Z]+[a-zA-Z-._0-9]*@leetcode[.]com'
+
+#1527.
+
+/* Write your T-SQL query statement below */
+select patient_id,patient_name,conditions
+from patients
+where conditions like '%[ ][D][I][A][B][1]%' or conditions like '[D][I][A][B][1]%';
+
+#1571.
+
+# Write your MySQL query statement below
+select W.name as warehouse_name,sum(W.units*P.Width*P.Length*P.Height) as volume
+from
+Warehouse W join Products P
+on W.product_id = P.product_id
+group by W.name;
+
+#1581.
+
+/* Write your T-SQL query statement below */
+select T.customer_id,count(T.customer_id) as count_no_trans from (select Visits.customer_id from Visits left join Transactions on Visits.visit_id = Transactions.visit_id where Transactions.transaction_id is null) as T group by T.customer_id;
+
+#1587.
+
+# Write your MySQL query statement below
+select U.name, sum(T.amount) as balance
+from Users U join Transactions T
+on U.account = T.account
+group by U.name
+having balance > 10000
+
+#1607.
+
+# Write your MySQL query statement below
+with temptable(seller_name) as
+  (select Seller.seller_name
+  from Seller join Orders
+  on Seller.seller_id = Orders.seller_id
+  where year(Orders.sale_date) = 2020)
+
+  select seller_name
+  from Seller
+  where seller_name not in (select * from temptable)
+  order by seller_name asc;
+
+#1633.
+
+/* Write your T-SQL query statement below */
+
+select contest_id,round(100.00 * count(user_id)/(select count(distinct user_id) from users),2) as 'percentage'
+from register group by contest_id order by 'percentage' desc,contest_id asc;
+
+#1661.
+
+/* Write your T-SQL query statement below */
+select A.machine_id,round(avg(Activity.timestamp-A.timestamp),3) as processing_time from Activity as A join Activity on A.machine_id = Activity.machine_id and A.process_id = Activity.process_id where A.activity_type = 'start' and Activity.activity_type = 'end' group by A.machine_id;
+
+#1667.
+
+/* Write your T-SQL query statement below */
+select user_id,upper(substring(name,1,1)) + lower(substring(name,2,len(name)-1)) as name
+from Users
+order by user_id;
+
+#1683.
+
+/* Write your T-SQL query statement below */
+select tweet_id from Tweets where len(content) > 15;
+
+#1693.
+
+# Write your MySQL query statement below
+
+  with T1 (date_id,make_name,unique_leads,unique_partners) as
+    (select date_id,make_name,count(distinct lead_id) as unique_leads,count(distinct partner_id) as unique_partners
+    from DailySales
+    group by date_id,make_name)
+
+      select * from T1;
+
+#1699.
+
+# Write your MySQL query statement below
+select T.person1,T.person2,count(*) as call_count,sum(T.duration) as total_duration
+from
+(select 
+case
+  when from_id < to_id then from_id
+  when to_id < from_id then to_id
+end as person1,
+case
+  when from_id > to_id then from_id
+  when to_id > from_id then to_id
+end as person2,
+duration
+from Calls) as T
+group by T.person1,T.person2;
+
+#1729.
+
+/* Write your T-SQL query statement below */
+select user_id,count(follower_id) as followers_count from Followers group by user_id order by user_id asc;
+
+#1731.
+
+/* Write your T-SQL query statement below */
+
+SELECT EMPLOYEES.employee_id,EMPLOYEES.name,
+COUNT(T.reports_to) AS reports_count,round(AVG(cast(T.age as decimal(10, 2))),0) as average_age
+FROM EMPLOYEES CROSS JOIN EMPLOYEES AS T
+WHERE EMPLOYEES.employee_id = T.reports_to
+GROUP BY EMPLOYEES.employee_id,EMPLOYEES.name
+ORDER BY EMPLOYEES.employee_id;
+
+#1741.
+
+# Write your MySQL query statement below
+select event_day as day,emp_id,sum(out_time-in_time) as total_time
+from Employees
+group by day,emp_id;
+
+#1757.
+
+/* Write your T-SQL query statement below */
+SELECT PRODUCT_ID FROM PRODUCTS WHERE LOW_FATS='Y' AND RECYCLABLE='Y';
+
+#1789.
+
+/* Write your T-SQL query statement below */
+select employee_id,department_id
+from Employee
+where primary_flag = 'Y'
+union
+select employee_id,department_id
+from Employee
+where employee_id in
+(select employee_id
+from Employee
+group by employee_id
+having count(employee_id) = 1)
+
+#1821.
+
+# Write your MySQL query statement below
+select customer_id
+from Customers
+where year = 2021 and revenue > 0;
+
+#1873.
+
+# Write your MySQL query statement below
+select employee_id, if(employee_id % 2 = 1 and substr(name,1,1) != 'M',salary, 0) as bonus
+from Employees
+order by employee_id;
+
+#1890.
+
+# Write your MySQL query statement below
+select user_id, max(time_stamp) as last_stamp
+from Logins
+where year(time_stamp) = 2020
+group by user_id;
+
+#1907.
+
+/* Write your T-SQL query statement below */
+select 'Low Salary' as category, sum(T1.category) as accounts_count
+from
+(select category = CASE
+     WHEN income < 20000 THEN 1 ELSE 0
+     END
+from Accounts) as T1
+union
+select 'Average Salary' as category, sum(T2.category) as accounts_count
+from
+(select category = CASE
+     WHEN income between 20000 and 50000 then 1 ELSE 0
+     END
+from Accounts) as T2
+union
+select 'High Salary' as category, sum(T3.category) as accounts_count
+from
+(select category = CASE
+     WHEN income > 50000 then 1 ELSE 0
+     END
+from Accounts) as T3;
+
+#1934.
+
+/* Write your T-SQL query statement below */
+select T.user_id,cast(cast(sum(iif(T.action = 'confirmed',1,0)) as float) / cast(iif(count(T.action) = 0,1,count(T.action)) as float) as decimal(10,2)) as confirmation_rate from (select signups.user_id, confirmations.action from signups left join confirmations
+on signups.user_id = confirmations.user_id) as T group by T.user_id;
+
+#1965.
+
+# Write your MySQL query statement below
+select employee_id
+from Employees
+where employee_id not in
+(select employee_id from Salaries)
+union
+select employee_id
+from Salaries
+where employee_id not in
+(select employee_id from Employees)
+order by employee_id
+
+#1978.
+
+/* Write your T-SQL query statement below */
+select employee_id
+from Employees
+where not manager_id is null and manager_id not in (select distinct employee_id from Employees) and salary < 30000
+order by employee_id asc;
+
+#2082.
+
+# Write your MySQL query statement below
+
+select count(T.customer_id) as rich_count
+from
+(select customer_id from Store
+where amount > 500
+group by customer_id
+having count(customer_id) >= 1) as T;
+
+#2356.
+
+/* Write your T-SQL query statement below */
+select teacher_id,count(distinct subject_id) as cnt from Teacher group by teacher_id;
+
+
+
+
+
+
+
+
