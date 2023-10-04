@@ -237,7 +237,9 @@ on Sales.product_id = S.product_id and Sales.year = S.first_year;
 #1075.
 
 # Write your MySQL query statement below
-select project.project_id,round(avg(cast(employee.experience_years as float)),2) as average_years from project left join employee on project.employee_id = employee.employee_id group by project.project_id order by project.project_id;
+select project.project_id,round(avg(cast(employee.experience_years as float)),2) as average_years 
+from project left join employee on project.employee_id = employee.employee_id 
+group by project.project_id order by project.project_id;
 
 #1077.
 
@@ -297,7 +299,8 @@ from Delivery
 /* find first orders*/
 select round(100.00 * cast(count(delivery.customer_id) as decimal(10,2)) / cast((select count(distinct customer_id) from Delivery) as decimal(10,2)),2) as immediate_percentage
 from (select customer_id,min(order_date) as first_order from delivery group by customer_id) as T
-join delivery on T.first_order = delivery.order_date and T.customer_id = delivery.customer_id where delivery.customer_pref_delivery_date = T.first_order;
+join delivery on T.first_order = delivery.order_date and T.customer_id = delivery.customer_id 
+where delivery.customer_pref_delivery_date = T.first_order;
 
 #1193.
 
@@ -332,7 +335,8 @@ from queries group by query_name;
 #1251.
 
 /* Write your T-SQL query statement below */
-select T.product_id, cast(sum(cast(T.units as decimal(10,3)) * cast(T.price as decimal(10,3))) / sum(cast(T.units as decimal(10,2))) as decimal(10,2)) as average_price from (SELECT prices.product_id,prices.price,UnitsSold.units from prices join UnitsSold on prices.product_id = UnitsSold.product_id where UnitsSold.purchase_date between prices.start_date and prices.end_date) as T group by T.product_id;
+select T.product_id, cast(sum(cast(T.units as decimal(10,3)) * cast(T.price as decimal(10,3))) / sum(cast(T.units as decimal(10,2))) as decimal(10,2)) as average_price from (SELECT prices.product_id,prices.price,UnitsSold.units from prices join UnitsSold on prices.product_id = UnitsSold.product_id where UnitsSold.purchase_date between prices.start_date and prices.end_date) as T 
+group by T.product_id;
 
 #1280.
 
@@ -526,7 +530,9 @@ from register group by contest_id order by 'percentage' desc,contest_id asc;
 #1661.
 
 /* Write your T-SQL query statement below */
-select A.machine_id,round(avg(Activity.timestamp-A.timestamp),3) as processing_time from Activity as A join Activity on A.machine_id = Activity.machine_id and A.process_id = Activity.process_id where A.activity_type = 'start' and Activity.activity_type = 'end' group by A.machine_id;
+select A.machine_id,round(avg(Activity.timestamp-A.timestamp),3) as processing_time 
+from Activity as A join Activity on A.machine_id = Activity.machine_id and A.process_id = Activity.process_id 
+where A.activity_type = 'start' and Activity.activity_type = 'end' group by A.machine_id;
 
 #1667.
 
