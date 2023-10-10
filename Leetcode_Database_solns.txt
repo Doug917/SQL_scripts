@@ -173,6 +173,16 @@ from Tree;
 # Write your MySQL query statement below
 select x,y,z,if(x+y > z and y+z > x and x+z > y, "Yes", "No") as triangle from Triangle;
 
+#612.
+
+# Write your MySQL query statement below
+
+select round(SQRT((T1.x-T2.x)*(T1.x-T2.x)+(T1.y-T2.y)*(T1.y-T2.y)), 2) as shortest
+from Point2D T1 cross join Point2D T2
+on (T1.x <> T2.x or T1.y <> T2.y)
+order by shortest
+limit 1;
+
 #613.
 
 # Write your MySQL query statement below
