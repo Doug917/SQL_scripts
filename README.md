@@ -10,3 +10,5 @@ The SQL_QUERY and SQL_PLOT
 files are for analyzing data pulled from SAP.
 
 The primes.sql file is a procedure I wrote for making a table of prime numbers.
+
+The leetcode_database file is a list of my solutions to problems in leetcode.
