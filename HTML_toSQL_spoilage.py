@@ -6,8 +6,6 @@ import time
 
 #requirements on local machine:  install selenium and sqlite3.
 
-###I could have tried using pandas html technology, but I wanted to demonstrate manual parsing of the html source code.
-
 #--------------------------------------------------------Create/update SQL table--------------------------------------------------------
 
 outputfilename = 'DATA.db'
