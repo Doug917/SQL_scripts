@@ -20,7 +20,7 @@ print("Table created successfully")
 #--------------------------------------------------------Pull Data from HTML Source----------------------------------------------
 
 browser = webdriver.Chrome()
-browser.get("http://v-ltserver4/Product/WasteReport/all_waste_reports.asp")	#company's data log of spoilage reports
+browser.get(#URL#)	#company's data log of spoilage reports (not shown for privacy)
 dataPage = browser.page_source
 time.sleep(5)
 browser.close()
